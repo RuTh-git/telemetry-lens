@@ -21,6 +21,7 @@ def load_session(year: int, race: str, session: str):
         session_obj = fastf1.get_session(year, race, session)
         session_obj.load()
 
+
         driver_numbers = session_obj.drivers
         results = session_obj.results
 
@@ -59,3 +60,5 @@ def load_session(year: int, race: str, session: str):
     
     except Exception as e:
         return {"error": str(e)}
+
+    
