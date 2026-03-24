@@ -53,18 +53,41 @@ def compare_drivers(year: int, race: str, session: str, driver1: str, driver2: s
         lap2 = session_obj.laps.pick_driver(driver2).pick_fastest()
         tel2 = lap2.get_car_data().add_distance()
 
+        lap1_time_seconds = lap1["LapTime"].total_seconds()
+        lap2_time_seconds = lap2["LapTime"].total_seconds()
+
+        # Consistent delta convention:
+        # positive -> driver1 better 
+        # negative -> driver2 better 
+        lap_time_delta = round(lap2_time_seconds - lap1_time_seconds, 3)
+
+        max_speed_1 = int(tel1["Speed"].max())
+        max_speed_2 = int(tel2["Speed"].max())
+        max_speed_delta = max_speed_1 - max_speed_2 
+
+        avg_speed_1 = round(tel1["Speed"].mean(), 2)
+        avg_speed_2 = round(tel2["Speed"].mean(), 2)
+        avg_speed_delta = round(avg_speed_1 - avg_speed_2, 2)
+
         return {
             "driver1": driver1,
             "driver2": driver2,
             "lap1_time": str(lap1["LapTime"]),
             "lap2_time": str(lap2["LapTime"]),
+            "lap1_time_seconds": round(lap1_time_seconds, 3),
+            "lap2_time_seconds": round(lap2_time_seconds, 3),
+            "delta": {
+                "lap_time_seconds": lap_time_delta,
+                "max_speed_delta": max_speed_delta,
+                "avg_speed_delta": avg_speed_delta,
+            },
             "telemetry": {
                 "driver1": {
-                    "distance": tel1["Distance"].fillna(0).tolist(),
+                    "distance": tel1["Distance"].fillna(0).round(2).tolist(),
                     "speed": tel1["Speed"].fillna(0).tolist(),
                 },
                 "driver2": {
-                    "distance": tel2["Distance"].fillna(0).tolist(),
+                    "distance": tel2["Distance"].fillna(0).round(2).tolist(),
                     "speed": tel2["Speed"].fillna(0).tolist(),
                 },
             },
