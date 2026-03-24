@@ -33,7 +33,7 @@ def load_session(year: int, race: str, session: str):
 
                 drivers.append(
                     {
-                        "driver_name": str(number),
+                        "driver_number": str(number),
                         "code": driver_row.get("Abbreviation"), 
                         "full_name": driver_row.get("FullName"),
                         "team_name": driver_row.get("TeamName"),
